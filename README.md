@@ -16,6 +16,8 @@ Build the container using
 ```
 docker build -t sample_gaelib_app .
 ```
+Make sure to use this name as the run container script uses this name
+
 Launch the Google datastore emulator
 ```
 docker run --name=gaelib_ds -p 10088:8888  google/cloud-sdk gcloud beta emulators datastore start --host-port 0.0.0.0:8888 --project emulator --store-on-disk --consistency=1
