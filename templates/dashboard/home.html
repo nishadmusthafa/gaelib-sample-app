@@ -1,0 +1,110 @@
+{% extends "logged_in_base.html" %}
+
+{% block app_specific_sidebar %}
+{% include sidebar_template %}
+{% endblock %}
+
+{% block content %}
+<div id="wrapper">
+  <br />
+  {% if message %}
+  <div class="alert alert-success" role="alert">{{message}}</div>
+  {% endif %}
+  <div class="row">
+    <a class="btn btn-success" href={{ "/" ~ dashboard_prefix ~ "/" ~ view_name ~ "/addupdate" }}> {{ "Add new Sample Entity "}}
+    </a>
+  </div>
+  <br />
+  <br />
+
+  {% if test_entities %}
+  <div class="table-responsive" style="max-height:800px;overflow:auto;">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>
+            String Field
+          </th>
+          <th>
+            Date Field
+          </th>
+          <th>
+            Float Field
+          </th>
+        <tr>
+      </thead>
+      <tbody id="contest-holder" id="contestTable">
+        {% for sample_entity in test_entities %}
+        <tr>
+          <td>
+            {{sample_entity.string_field}}
+          </td>
+          <td>
+            {{sample_entity.date_field}}
+          </td>
+          <td>
+            {{sample_entity.float_field}}
+          </td>
+          <td>
+            <a class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModal"
+              data-id={{ "/admindashboard/" ~ view_name ~ "/delete?sample_entity_id=" ~ sample_entity.key().id_or_name }}>Delete</a>
+            <a class="btn btn-info"
+              href={{ "/admindashboard/" ~ view_name ~ "/addupdate?sample_entity_id=" ~ sample_entity.key().id }}>Edit</a>
+          </td>
+        <tr>
+          {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+
+  <div class="alert alert-info" role="alert">There are no test entities. Please add one to see them here</div>
+
+  {% endif%}
+  </tr>
+</div>
+
+
+
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+  aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true" data-backdrop="static">
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="modal-title close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h3>Confirm Delete Sample Entity</h3>
+      </div>
+      <div class="modal-body">
+        <h5>Are You sure You want to delete this Sample Entity?</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        <a class="btn btn-danger" href="" id="delete_url">Confirm</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block additionaljavascript %}
+<!-- <script>
+  function copyToClipboard(text) {
+    window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+  }
+</script> -->
+<script>
+  //triggered when modal is about to be shown
+  $('#deleteConfirmationModal').on('show.bs.modal', function (e) {
+
+    //get data-id attribute of the clicked element
+    var delete_url = $(e.relatedTarget).data('id');
+    modal = $(this);
+    modal.find('.modal-footer #delete_url').attr('href', delete_url);
+    console.log(modal.find('.modal-footer #delete_url').attr('href'));
+  });
+</script>
+{% endblock %}

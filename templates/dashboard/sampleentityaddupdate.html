@@ -1,0 +1,60 @@
+{% extends "logged_in_base.html" %}
+
+{% block app_specific_sidebar %}
+{% include sidebar_template %}
+{% endblock %}
+
+{% block content %}
+<br />
+
+<div id="wrapper">
+  {% if errors %}
+  <div class="alert alert-danger" role="alert">{{errors}}</div>
+  {% endif %}
+  <section>
+
+    <form action={{ "/" ~ dashboard_prefix ~ "/" ~ view_name ~ "/addupdate" }} method="post" id="testEntityForm"
+      enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="answer">String field</label>
+        <input type="text" class="form-control" name="string_field" id="string_field" {% if sample_entity
+          %}value="{{sample_entity.string_field}}" {% endif %} placeholder="string" />
+      </div>
+      <div class="form-group">
+        <label for="startdate">Date field</label>
+        <input type="text" class="form-control datepicker" name="date_field" id="date_field" {% if sample_entity %}
+          value="{{sample_entity.date_field}}" {% else %}placeholder="Click to pick a date" {%endif %} >
+      </div>
+      <div class="form-group">
+        <label for="answer">Float field</label>
+        <input type="text" class="form-control" name="float_field" id="float_field" {% if sample_entity
+          %}value="{{sample_entity.float_field}}" {% endif %} placeholder="string" />
+      </div>
+      <input type="hidden" id="sample_entity_id" name="sample_entity_id"
+        value="{% if sample_entity %}{{sample_entity.key().id}}{% endif %}">
+      <div class="row">
+        <div class="col-md-2 col-md-offset-10">
+          <button type="submit" id="testEntityFormSubmit" class="btn btn-success">Save Changes</button>
+        </div>
+      </div>
+
+    </form>
+  </section>
+</div>
+
+
+
+{% endblock %}
+
+{% block additionaljavascript %}
+<script type="text/javascript">
+
+  $(document).ready(function () {
+    $('.datepicker').datepicker();
+    $(".datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
+    $("#date_field").datepicker('setDate', $("#date_field").attr('value'));
+  });
+
+
+</script>
+{% endblock %}
