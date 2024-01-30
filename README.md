@@ -37,7 +37,7 @@ Access the admin dashboard using http://localhost:10000/admindashboard/
 
 To run tests
 ```
-pip install -r requirements.txt
+pip install -r test_requirements.txt
 cd tests
 pytest
 ```
