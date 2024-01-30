@@ -26,7 +26,7 @@ Launch the container to run the local server
 ```
 ./run_dev_container.sh
 ```
-You will now be logged in to the container. To run the tests
+You will now be logged in to the container. To run the app locally
 ```
 python main.py
 ```
